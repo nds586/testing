@@ -5,6 +5,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import path
 
+from bookings.views import create_booking
+
 
 def home(request: HttpRequest) -> HttpResponse:
     return render(request, 'base.html')
@@ -18,6 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_view, name='login'),
     path('', home, name='home'),
+    path('bookings/create/', create_booking, name='booking-create'),
 ]
 
 if settings.DEBUG:

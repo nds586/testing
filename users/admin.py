@@ -29,5 +29,19 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
-admin.site.register(ServiceProvider)
-admin.site.register(Customer)
+@admin.register(ServiceProvider)
+class ServiceProviderAdmin(admin.ModelAdmin):
+    list_display = ('user', 'isVerified')
+    list_filter = ('isVerified',)
+    search_fields = ('user__email',)
+
+    def get_exclude(self, request, obj=None):
+        if request.user.is_superuser:
+            return ()
+        return ('idProof',)
+
+
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+    search_fields = ('user__email',)

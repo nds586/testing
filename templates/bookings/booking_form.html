@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Create Booking</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div>
+      {{ form.category.label_tag }}
+      {{ form.category }}
+    </div>
+    <div>
+      {{ form.scheduledTime.label_tag }}
+      {{ form.scheduledTime }}
+    </div>
+    <div>
+      {{ form.serviceAddress.label_tag }}
+      {{ form.serviceAddress }}
+    </div>
+
+    <p><strong>Live Estimated Quote:</strong> <span id="live-quote">Select a category</span></p>
+
+    <button type="submit">Book</button>
+  </form>
+
+  <script>
+    (function () {
+      const categorySelect = document.getElementById('id_category');
+      const quoteElement = document.getElementById('live-quote');
+
+      function updateQuote() {
+        const selected = categorySelect?.options[categorySelect.selectedIndex];
+        const price = selected?.dataset?.basePrice;
+        quoteElement.textContent = price ? `$${price}` : 'Select a category';
+      }
+
+      updateQuote();
+      categorySelect?.addEventListener('change', updateQuote);
+    })();
+  </script>
+{% endblock %}

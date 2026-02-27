@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Provider Workspace{% endblock %}
+{% block content %}
+<section class="card mobile-stack">
+    <h2>Provider Workspace</h2>
+
+    {% if invites %}
+        <h3>New Invites</h3>
+        {% for booking in invites %}
+            <p>{{ booking.category.name }} - {{ booking.serviceAddress|truncatechars:35 }}</p>
+            <div class="action-row">
+                <a class="btn accept" href="{% url 'provider-invite-action' booking.id 'accept' %}">ACCEPT</a>
+                <a class="btn reject" href="{% url 'provider-invite-action' booking.id 'reject' %}">REJECT</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No new invites right now.</p>
+    {% endif %}
+
+    <hr>
+    <h3>Active Job</h3>
+    {% if active_booking %}
+        <p>{{ active_booking.category.name }}</p>
+        <a class="btn start" href="{% url 'provider-invite-action' active_booking.id 'start' %}" data-start-cleaning>START CLEANING</a>
+        <p data-started-at>{% if active_booking.status == 'STARTED' %}Already started.{% else %}Not started yet.{% endif %}</p>
+    {% else %}
+        <p>No active job assigned.</p>
+    {% endif %}
+</section>
+{% endblock %}

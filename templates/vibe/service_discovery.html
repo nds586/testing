@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Service Discovery{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>Service Discovery</h2>
+    <div class="grid category-grid">
+        {% for category in categories %}
+        <article class="card category-card">
+            <span class="price-badge">starting from ${{ category.basePrice }}</span>
+            <div class="category-icon">
+                {% if category.icon %}
+                    <img src="{{ category.icon.url }}" alt="{{ category.name }}" width="40" height="40">
+                {% else %}
+                    🧹
+                {% endif %}
+            </div>
+            <h3>{{ category.name }}</h3>
+            <p>Professional {{ category.name|lower }} specialists available on demand.</p>
+        </article>
+        {% empty %}
+        <p>No categories found. Create one in the Admin panel.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

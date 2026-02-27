@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Checkout & Summary{% endblock %}
+{% block content %}
+<section class="card glass">
+    <h2>Checkout & Summary</h2>
+    <div class="summary-row"><span>Home Cleaning</span><strong>$180.00</strong></div>
+    <div class="summary-row"><span>Add-ons</span><strong>$35.00</strong></div>
+    <div class="summary-row"><span>Discount</span><strong data-discount-value>-$0.00</strong></div>
+    <hr>
+    <div class="summary-row"><span>Total</span><strong data-grand-total>$215.00</strong></div>
+    <form data-discount-form data-subtotal="215" class="search-row">
+        <input type="text" name="discount_code" placeholder="Discount Code">
+        <button type="submit">Apply</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Global Admin Dashboard{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>Global Admin Dashboard</h2>
+    <div class="grid metric-grid">
+        <article class="card metric">
+            <h3>Total Revenue</h3>
+            <strong>${{ total_revenue }}</strong>
+        </article>
+        <article class="card metric">
+            <h3>Active Cleaners</h3>
+            <strong>{{ active_cleaners }}</strong>
+        </article>
+        <article class="card metric">
+            <h3>Pending Disputes</h3>
+            <strong>{{ pending_disputes }}</strong>
+        </article>
+    </div>
+</section>
+{% endblock %}

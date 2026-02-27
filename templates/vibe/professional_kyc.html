@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Professional KYC Portal{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>Professional KYC Portal</h2>
+    {% if not provider.isVerified %}
+        <div class="banner">Pending Verification: Your documents are under review.</div>
+    {% endif %}
+    <form class="grid" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>ID Proof Upload
+            <input class="field" type="file" name="idProof">
+        </label>
+        <label>Experience Info
+            <textarea class="field" rows="5" name="experienceInfo" placeholder="Tell us about your cleaning experience">{{ provider.experienceInfo }}</textarea>
+        </label>
+        <button class="btn" type="submit">Submit KYC</button>
+    </form>
+</section>
+{% endblock %}

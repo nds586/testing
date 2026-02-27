@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Hero Landing | LuminaClean{% endblock %}
+{% block content %}
+<section class="hero">
+    <p>Earth Tone Marketplace</p>
+    <h1>Find trusted cleaners around you.</h1>
+    <p>Eco-minded professionals, transparent pricing, zero surprises.</p>
+    <form class="search-row" data-hero-search-form data-redirect-url="{% url 'service-discovery' %}">
+        <input type="text" name="postcode" placeholder="Enter Postcode" required>
+        <button type="submit">Search</button>
+    </form>
+    <div class="status-text" data-hero-status></div>
+</section>
+{% endblock %}

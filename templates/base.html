@@ -1,139 +1,43 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}LuminaClean{% endblock %}</title>
-    <style>
-        :root {
-            --olive-green: #556B2F;
-            --warm-sand: #F5F5DC;
-            --charcoal: #333333;
-            --glass-bg: rgba(245, 245, 220, 0.2);
-            --glass-border: rgba(255, 255, 255, 0.25);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, var(--warm-sand), #fff);
-            color: var(--charcoal);
-            min-height: 100vh;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            background-color: var(--olive-green);
-            color: var(--warm-sand);
-        }
-
-        .brand {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .nav-links a {
-            color: var(--warm-sand);
-            text-decoration: none;
-            padding: 0.4rem 0.6rem;
-            border-radius: 0.4rem;
-            transition: background-color 0.2s ease;
-        }
-
-        .nav-links a:hover {
-            background-color: rgba(245, 245, 220, 0.15);
-        }
-
-        main {
-            padding: 1.5rem;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: 1rem;
-        }
-
-        .dashboard-card {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 1rem;
-            padding: 1.2rem;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        }
-
-        footer {
-            text-align: center;
-            padding: 0.8rem 1rem;
-            color: var(--charcoal);
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .nav-links {
-                width: 100%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <header class="navbar">
-        <div class="brand">LuminaClean</div>
+        <a class="brand" href="{% url 'hero-landing' %}">LuminaClean</a>
         <nav class="nav-links">
-            <a href="/">Home</a>
-            {% if request.user.is_authenticated %}
-                {% if request.user.is_superuser or request.user.user_type == 'ADMIN' %}
-                    <a href="/admin/">Admin Panel</a>
-                    <a href="#">Manage Users</a>
-                    <a href="#">Reports</a>
-                {% elif request.user.user_type == 'PROVIDER' %}
-                    <a href="#">Job Requests</a>
-                    <a href="#">My Availability</a>
-                    <a href="#">Earnings</a>
-                {% elif request.user.user_type == 'CUSTOMER' %}
-                    <a href="#">Book Cleaning</a>
-                    <a href="#">My Bookings</a>
-                    <a href="#">Invoices</a>
-                {% endif %}
-                <a href="#">Logout</a>
-            {% else %}
-                <a href="#">Login</a>
-                <a href="#">Register</a>
-            {% endif %}
+            <a href="{% url 'hero-landing' %}">Home</a>
+            <a href="{% url 'service-discovery' %}">Services</a>
+            <a href="{% url 'booking-configurator' %}">Book</a>
+            <a href="{% url 'customer-command-center' %}">Dashboard</a>
+            <a href="{% url 'provider-workspace' %}">Provider</a>
+            <a href="{% url 'global-admin-dashboard' %}">Admin</a>
         </nav>
     </header>
 
-    <main>
-        <section class="dashboard-card">
-            <h1>{% block page_title %}Welcome to LuminaClean{% endblock %}</h1>
-            <p>{% block content %}Earth-neutral premium cleaning marketplace in progress.{% endblock %}</p>
-        </section>
+    
+    <main class="page-shell">
+        {% if messages %}
+            <section class="card">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </section>
+        {% endif %}
+        {% block content %}{% endblock %}
     </main>
+
 
     <footer>
         &copy; {% now "Y" %} LuminaClean
     </footer>
+    <script src="{% static 'js/vibe.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

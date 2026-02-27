@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Customer Command Center{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>Active Bookings</h2>
+    <div class="grid">
+        {% for booking in bookings %}
+        <article class="booking-row {% if booking.status == 'STARTED' %}pulse{% endif %}">
+            <strong>{{ booking.category }}</strong>
+            <span>Status: {{ booking.status }}</span>
+            <span>Scheduled: {{ booking.scheduled|date:'M d, Y h:i A' }}</span>
+            {% if booking.can_cancel %}
+                <button class="btn reject">Cancel</button>
+            {% endif %}
+        </article>
+        {% empty %}
+            <p>No bookings found.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

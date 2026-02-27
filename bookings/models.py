@@ -33,11 +33,13 @@ class Booking(models.Model):
     def __str__(self) -> str:
         return f'Booking #{self.pk} - {self.category.name}'
 
-    def find_best_provider(self) -> ServiceProvider | None:
-        active_statuses = [Booking.Status.PENDING, Booking.Status.ACCEPTED]
+    def find_best_provider(self, *, exclude_provider_ids: list[int] | None = None) -> ServiceProvider | None:
+        active_statuses = [Booking.Status.PENDING, Booking.Status.ACCEPTED, Booking.Status.STARTED]
+        excluded = exclude_provider_ids or []
 
         ranked_providers = (
             ServiceProvider.objects.filter(isVerified=True)
+            .exclude(id__in=excluded)
             .annotate(
                 average_rating=Coalesce(Avg('bookings__review__rating'), Value(0.0)),
                 active_bookings=Count(
@@ -49,6 +51,26 @@ class Booking(models.Model):
             .order_by('-average_rating', 'active_bookings', 'id')
         )
         return ranked_providers.first()
+
+    def assign_best_provider(self, *, exclude_provider_ids: list[int] | None = None) -> ServiceProvider | None:
+        provider = self.find_best_provider(exclude_provider_ids=exclude_provider_ids)
+        if provider is None:
+            self.service_provider = None
+            self.status = Booking.Status.PENDING
+            self.save(update_fields=['service_provider', 'status'])
+            return None
+
+        self.service_provider = provider
+        self.status = Booking.Status.ACCEPTED
+        self.save(update_fields=['service_provider', 'status'])
+        return provider
+
+    def handle_provider_rejection(self, rejecting_provider: ServiceProvider) -> ServiceProvider | None:
+        excluded_ids = [rejecting_provider.id]
+        if self.service_provider_id:
+            excluded_ids.append(self.service_provider_id)
+
+        return self.assign_best_provider(exclude_provider_ids=excluded_ids)
 
 
 class Review(models.Model):

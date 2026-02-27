@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Provider Discovery{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>Available Providers</h2>
+    <div class="provider-list">
+        {% for provider in providers %}
+        <article class="provider-item">
+            <div>
+                <h3>{{ provider.user.email }} <span class="badge">Verified</span></h3>
+                <p class="rating">★ {{ provider.rating|floatformat:1 }} ({{ provider.reviews }} reviews)</p>
+                <p>{{ provider.experienceInfo|default:'Experienced cleaning professional.' }}</p>
+            </div>
+            <a class="btn" href="{% url 'booking-create' %}">Select</a>
+        </article>
+        {% empty %}
+        <p>No verified providers yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

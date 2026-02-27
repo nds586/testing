@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Booking Configurator{% endblock %}
+{% block content %}
+<section class="card" data-booking-total data-base-price="120">
+    <h2>Booking Configurator</h2>
+    <div class="stepper">
+        <span class="step-pill active">Step 1: Date/Time</span>
+        <span class="step-pill">Step 2: Address</span>
+        <span class="step-pill">Step 3: Add-ons</span>
+    </div>
+    <div class="grid form-grid">
+        <label>Date <input class="field" type="date"></label>
+        <label>Time <input class="field" type="time"></label>
+        <label class="grid full-width">Address
+            <textarea class="field" rows="3" placeholder="Service address"></textarea>
+        </label>
+    </div>
+    <h3>Add-ons</h3>
+    <div class="addon-list">
+        <label><input type="checkbox" data-addon-price="25"> Fridge Cleaning (+$25)</label>
+        <label><input type="checkbox" data-addon-price="20"> Oven Cleaning (+$20)</label>
+        <label><input type="checkbox" data-addon-price="15"> Window Detailing (+$15)</label>
+        <label><input type="checkbox" data-addon-price="30"> Carpet Deep Clean (+$30)</label>
+    </div>
+    <p class="total-box">Dynamic Total: <span data-total-value></span></p>
+</section>
+{% endblock %}
